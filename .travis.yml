@@ -1,0 +1,27 @@
+os:
+  - osx
+
+language: cpp
+
+sudo: required
+dist: trusty
+osx_image: xcode7
+
+cache:
+  directories:
+  - $HOME/.macports-ci-ccache
+
+before_install:
+  - brew install autoconf automake libtool miniupnpc openssl pkg-config
+  - brew install boost protobuf libevent libqrencode
+  - brew install berkeley-db4
+  - brew install berkeley-db
+  - brew install qt5 --with-dbus
+  - brew link qt5 --force --overwrite
+  - cd /Users/travis/build/nashanas/slimcoin
+
+
+script: 
+  - cd src
+  - make clean
+  - make -f makefile.osx RELEASE=true
