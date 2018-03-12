@@ -12,18 +12,24 @@ cache:
   - $HOME/.macports-ci-ccache
 
 before_install:
-  - brew install autoconf libtool miniupnpc pkg-config
-  - brew upgrade openssl
-  - brew upgrade automake
-  - brew install boost protobuf libevent libqrencode
-  - brew install berkeley-db4
-  - brew install berkeley-db
-  - brew install qt5 --with-dbus
-  - brew link qt5 --force --overwrite
-  - cd /Users/travis/build/nashanas/slimcoin
-
-
+ - brew install boost berkeley-db4 openssl miniupnpc
+ - brew link berkeley-db4 --force
+ - brew link openssl --force
+ - sudo mkdir -p /opt/local/lib
+ - sudo ln -s /usr/local/lib /opt/local/lib/db48
+ - sudo ln -s /usr/local/lib /usr/local/lib/db48
+ - sudo ln -s /opt/local/lib /opt/local/lib/lib
+ - sudo ln -s /opt/local/lib/db48/libdb_cxx-4.8.dylib /opt/local/lib/libdb_cxx-4.8.dylib
+  - brew install qt@5.5
+  - brew link --force qt@5.5
+  - echo 'export PATH="$(brew --prefix qt@5.5)/bin:$PATH"' >> ~/.bashrc
+  - ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/    
+  - ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/
+  - cd /Users/travis/build/nashanas/slimcoin/src/leveldb
+  - chmod +x build_detect_platform
+  - cd /Users/travis/build/nashanas/slimcoin/src/secp256k1/
+  - chmod +x autogen.sh
 script: 
-  - cd src
-  - make clean
-  - make -f makefile.osx RELEASE=true
+  - cd /Users/travis/build/nashanas/slimcoin/
+  - qmake
+  - make
